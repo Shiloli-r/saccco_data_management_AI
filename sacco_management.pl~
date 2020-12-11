@@ -13,6 +13,7 @@ start:- write("\e[2J"), nl,
     write("Welcome to the Sacco Data Management System"),
     nl, write("Enter 'read_bus' to enter bus data "),
     nl, write("Enter 'read_driver to enter driver data "),
+    nl, write("Enter read_route to enter route data "),
     nl.
 
 
@@ -31,7 +32,19 @@ read_driver :- getDriverDetails(Name),
                nl, saveDriverDetails(Name), read_driver.
 
 getDriverDetails(Name) :- write("Enter Driver's Name (Enter 'quit' to stop): "), read(Name), nl.
+
 saveDriverDetails(Name) :- assertz(driver(Name)).
 
-%i
+
 %Route Data Entry
+%i
+%
+read_route :- getRouteDetails(From, To),
+               \+ From = quit,
+               \+ To = quit,
+               nl, saveRouteDetails(From, To), read_route.
+
+getRouteDetails(From, To) :- write("From (Enter 'quit' to stop): "), read(From), nl,
+ write("To (Enter 'quit' to stop):  "), read(To),nl.
+
+saveRouteDetails(From, To) :- assertz(route(From, To)).
