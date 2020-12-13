@@ -36,6 +36,11 @@ delete_bus :- getBusDetails(RegNumber),
             deleteBus(RegNumber), delete_bus.
 deleteBus(RegNumber) :- retract(bus(RegNumber)).
 
+%    SHOW BUSES
+showBus :- write("Registered Buses: "), nl, bus(_), forall(bus(X), printBus(X)).
+printBus(X):- format("---> bus(~w)", [X] ),nl.
+
+
 
 
 %-----------------  DRIVER MANAGEMENT ----------------------------------
@@ -57,9 +62,14 @@ delete_driver:- getDriverDetails(Name),
 
 deleteDriver(Name):- retract(driver(Name)).
 
+
+%    SHOW DRIVER
+showDriver :- write("Registered Drivers: "), nl, forall(driver(Name), printDriver(Name)).
+printDriver(Name):- format("---> driver(~w)", [Name] ),nl.
+
+
 % ------------  ROUTE MANAGEMENT ------------------------------------
 %Route Data Entry
-%i
 read_route :- getRouteDetails(From, To),
                \+ From = quit,
               % \+ To = quit,
@@ -73,6 +83,11 @@ saveRouteDetails(From, To) :- assertz(route(From, To)).
 % Route Data Deletion
 
 delete_route:- getRouteDetails(From, To),
-               \+ From = quit,nl
+               \+ From = quit,nl,
                deleteRoute(From, To), delete_route.
-deleteRoute(From, To) :- retract(From, To).
+deleteRoute(From, To) :- retract(route(From, To)).
+
+
+%    SHOW ROUTE
+showRoute :- write("Registered Drivers: "), nl, forall(route(From, To), printRoute(From, To)).
+printRoute(From, To):- format("---> route(~w, ~w)", [From, To] ),nl.

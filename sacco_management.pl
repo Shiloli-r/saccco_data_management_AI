@@ -12,11 +12,14 @@
 start:- write("\e[2J"), nl,
     write("Welcome to the Sacco Data Management System"),
     nl, write("Enter 'read_bus' to enter bus data "),
-    nl, write("Enter 'delete_bus' to delete a bus"),nl,
+    nl, write("Enter 'delete_bus' to delete a bus"),
+    nl, write("Enter 'showBus' to see all buses"),nl,
     nl, write("Enter 'read_driver to enter driver data "),
-    nl, write("Enter 'delete_driver' to delete a driver"),nl,
+    nl, write("Enter 'delete_driver' to delete a driver"),
+    nl, write("Enter 'showDriver' to show all drivers "), nl,
     nl, write("Enter 'read_route' to enter route data "),
     nl, write("Enter 'delete_route' to delete route data "),
+    nl, write("Enter 'showRoute' to show all routes "), nl,
     nl.
 
 %-----------------------  BUS MANAGEMENT -------------------------------
@@ -35,6 +38,11 @@ delete_bus :- getBusDetails(RegNumber),
             \+ RegNumber=quit, nl,
             deleteBus(RegNumber), delete_bus.
 deleteBus(RegNumber) :- retract(bus(RegNumber)).
+
+%    SHOW BUSES
+showBus :- write("Registered Buses: "), nl, bus(_), forall(bus(X), printBus(X)).
+printBus(X):- format("---> bus(~w)", [X] ),nl.
+
 
 
 
@@ -57,9 +65,14 @@ delete_driver:- getDriverDetails(Name),
 
 deleteDriver(Name):- retract(driver(Name)).
 
+
+%    SHOW DRIVER
+showDriver :- write("Registered Drivers: "), nl, forall(driver(Name), printDriver(Name)).
+printDriver(Name):- format("---> driver(~w)", [Name] ),nl.
+
+
 % ------------  ROUTE MANAGEMENT ------------------------------------
 %Route Data Entry
-%i
 read_route :- getRouteDetails(From, To),
                \+ From = quit,
               % \+ To = quit,
@@ -76,3 +89,8 @@ delete_route:- getRouteDetails(From, To),
                \+ From = quit,nl,
                deleteRoute(From, To), delete_route.
 deleteRoute(From, To) :- retract(route(From, To)).
+
+
+%    SHOW ROUTE
+showRoute :- write("Registered Drivers: "), nl, forall(route(From, To), printRoute(From, To)).
+printRoute(From, To):- format("---> route(~w, ~w)", [From, To] ),nl.
